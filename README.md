@@ -1,7 +1,7 @@
 # Go Continuous Delivery Task API plugin 
 
 > This is a wrapper over the Go CD newest JSON plugin API hiding all the communication details, letting you to 
-focus only on writing the task logic 
+focus only on writing the task logic.
 
 [![Build Status](https://travis-ci.org/jmnarloch/gocd-task-plugin-api.svg)](https://travis-ci.org/jmnarloch/gocd-task-plugin-api)
 
