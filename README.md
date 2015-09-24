@@ -12,7 +12,7 @@ Add the dependency to your project.
 ```
 <dependency>
   <groupId>io.jmnarloch</groupId>
-  <artifactId>go-task-plugin-api</artifactId>
+  <artifactId>gocd-task-plugin-api</artifactId>
   <version>1.0.0</version>
 </dependency>
 ```
