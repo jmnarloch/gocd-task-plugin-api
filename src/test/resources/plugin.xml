@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<go-plugin id="test.task.plugin" version="1.0.0">
+    <about>
+        <name>Task Plugin</name>
+        <version>1.0.0</version>
+        <target-go-version>14.4.0</target-go-version>
+        <description>
+            Sample task plugin
+        </description>
+        <vendor>
+            <name>Jakub Narloch</name>
+            <url>http://github.com/jmnarloch/gocd-task-plugin-api</url>
+        </vendor>
+    </about>
+</go-plugin>
