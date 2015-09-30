@@ -35,9 +35,9 @@ uploadArchives {
             }
 
             pom.project {
-                name 'Go Continous Delivery Gradle plugin'
+                name 'Go Continous Delivery task JSON API plugin'
                 packaging 'jar'
-                description 'Go Continous Delivery Gradle plugin'
+                description 'Go Continous Delivery task JSON API plugin'
                 url 'https://github.com/jmnarloch/gocd-task-plugin-api'
 
                 scm {
