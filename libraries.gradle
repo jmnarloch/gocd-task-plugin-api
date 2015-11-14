@@ -1,12 +1,13 @@
 ext {
 
     libraries = [
-            goPluginApi  : 'cd.go.plugin:go-plugin-api:14.4.0',
-            commonsIO    : 'commons-io:commons-io:2.4',
-            commonsLang  : 'org.apache.commons:commons-lang3:3.4',
-            gson         : 'com.google.code.gson:gson:2.3.1',
+            goPluginApi: 'cd.go.plugin:go-plugin-api:14.4.0',
+            commonsIO  : 'commons-io:commons-io:2.4',
+            commonsLang: 'org.apache.commons:commons-lang3:3.4',
+            gson       : 'com.google.code.gson:gson:2.3.1',
+            reflections: 'org.reflections:reflections:0.9.10',
 
-            junit        : 'junit:junit:4.12',
-            mockito      : 'org.mockito:mockito-all:1.10.19'
+            junit      : 'junit:junit:4.12',
+            mockito    : 'org.mockito:mockito-all:1.10.19'
     ]
 }

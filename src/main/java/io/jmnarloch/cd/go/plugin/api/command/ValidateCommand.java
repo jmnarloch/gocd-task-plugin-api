@@ -18,6 +18,8 @@ package io.jmnarloch.cd.go.plugin.api.command;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
+import io.jmnarloch.cd.go.plugin.api.parser.AbstractJsonParser;
+import io.jmnarloch.cd.go.plugin.api.validation.AbstractTaskValidator;
 import io.jmnarloch.cd.go.plugin.api.validation.TaskValidator;
 import io.jmnarloch.cd.go.plugin.api.validation.ValidationErrors;
 
@@ -39,10 +41,12 @@ public class ValidateCommand extends BaseCommand {
     /**
      * Creates new instance of {@link ValidateCommand}.
      *
+     * @param parser the JSON parser
      * @param taskValidator the validator
      */
-    public ValidateCommand(TaskValidator taskValidator) {
+    public ValidateCommand(AbstractJsonParser parser, TaskValidator taskValidator) {
         // TODO validate input
+        super(parser);
         this.taskValidator = taskValidator;
     }
 

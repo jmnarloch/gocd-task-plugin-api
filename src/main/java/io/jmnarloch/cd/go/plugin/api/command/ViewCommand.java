@@ -19,6 +19,7 @@ import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import io.jmnarloch.cd.go.plugin.api.exception.PluginException;
+import io.jmnarloch.cd.go.plugin.api.parser.AbstractJsonParser;
 import io.jmnarloch.cd.go.plugin.api.view.TaskView;
 
 import java.util.HashMap;
@@ -39,11 +40,12 @@ public class ViewCommand extends BaseCommand {
     /**
      * Creates new instance of {@link TaskView}.
      *
+     * @param parser the JSON parser
      * @param taskView the task view
      */
-    public ViewCommand(TaskView taskView) {
-
+    public ViewCommand(AbstractJsonParser parser, TaskView taskView) {
         // TODO check input
+        super(parser);
         this.taskView = taskView;
     }
 

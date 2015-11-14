@@ -28,10 +28,12 @@ import com.thoughtworks.go.plugin.api.response.DefaultGoApiResponse;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import io.jmnarloch.cd.go.plugin.api.dispatcher.ApiRequestDispatcher;
+import io.jmnarloch.cd.go.plugin.api.dispatcher.ApiRequestDispatcherBuilder;
 import io.jmnarloch.cd.go.plugin.api.parser.AbstractJsonParser;
 import io.jmnarloch.cd.go.plugin.api.parser.gson.GsonParser;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,26 +54,22 @@ public abstract class AbstractDispatchingTask extends AbstractGoPlugin {
     /**
      * The logger instance by this class hierarchy.
      */
-    private final Logger logger = Logger.getLoggerFor(getClass());
+    protected final Logger logger = Logger.getLoggerFor(getClass());
 
     /**
      * The request dispatcher.
      */
-    private final ApiRequestDispatcher dispatcher;
+    private ApiRequestDispatcher dispatcher;
 
     /**
      * The JSON parser.
      */
-    private final AbstractJsonParser parser;
+    private AbstractJsonParser parser;
 
     /**
      * Creates new instance of {@link AbstractDispatchingTask}.
      */
     public AbstractDispatchingTask() {
-
-        this.parser = createParser();
-        this.dispatcher = buildDispatcher();
-        // TODO validate state
     }
 
     /**
@@ -81,7 +79,9 @@ public abstract class AbstractDispatchingTask extends AbstractGoPlugin {
      */
     @Load
     public void onLoad(PluginContext context) {
-        // empty method
+        this.parser = createParser();
+        this.dispatcher = buildDispatcher();
+        // TODO validate state
     }
 
     /**
@@ -135,15 +135,28 @@ public abstract class AbstractDispatchingTask extends AbstractGoPlugin {
      * @return the list of supported versions
      */
     protected List<String> getSupportedExtensionVersions() {
-        return Arrays.asList("1.0");
+        return Collections.singletonList("1.0");
     }
 
     /**
-     * The templates method for building the concrete implementation of {@link ApiRequestDispatcher}.
+     * A template method for building the concrete implementation of {@link ApiRequestDispatcher}.
      *
      * @return the request dispatcher instance
      */
-    protected abstract ApiRequestDispatcher buildDispatcher();
+    protected ApiRequestDispatcher buildDispatcher() {
+        final ApiRequestDispatcherBuilder dispatcherBuilder = ApiRequestDispatcherBuilder.dispatch(parser);
+        configureDispatcher(dispatcherBuilder);
+        return dispatcherBuilder.build();
+    }
+
+    /**
+     * Template method that can be used for configuring the dispatcher.
+     *
+     * @param dispatcherBuilder the dispatcher builder.
+     */
+    protected void configureDispatcher(ApiRequestDispatcherBuilder dispatcherBuilder) {
+        // template method to be overridden by subclasses
+    }
 
     /**
      * Creates the error response.

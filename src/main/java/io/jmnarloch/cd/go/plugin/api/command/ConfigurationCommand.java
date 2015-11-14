@@ -19,6 +19,7 @@ import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import io.jmnarloch.cd.go.plugin.api.configuration.TaskConfiguration;
+import io.jmnarloch.cd.go.plugin.api.parser.AbstractJsonParser;
 
 /**
  * The configuration command.
@@ -35,10 +36,12 @@ public class ConfigurationCommand extends BaseCommand {
     /**
      * Creates new instance of {@link ConfigurationCommand}.
      *
+     * @param parser the JSON parser
      * @param taskConfiguration the configuration task
      */
-    public ConfigurationCommand(TaskConfiguration taskConfiguration) {
+    public ConfigurationCommand(AbstractJsonParser parser, TaskConfiguration taskConfiguration) {
         // TODO validate input
+        super(parser);
         this.taskConfiguration = taskConfiguration;
     }
 

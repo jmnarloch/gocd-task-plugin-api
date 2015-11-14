@@ -24,6 +24,7 @@ import io.jmnarloch.cd.go.plugin.api.executor.ExecutionConfiguration;
 import io.jmnarloch.cd.go.plugin.api.executor.ExecutionContext;
 import io.jmnarloch.cd.go.plugin.api.executor.ExecutionResult;
 import io.jmnarloch.cd.go.plugin.api.executor.TaskExecutor;
+import io.jmnarloch.cd.go.plugin.api.parser.AbstractJsonParser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,10 +44,12 @@ public class TaskCommand extends BaseCommand {
     /**
      * Creates new instance of {@link TaskCommand}.
      *
+     * @param parser the JSON parser
      * @param taskExecutor task executor
      */
-    public TaskCommand(TaskExecutor taskExecutor) {
+    public TaskCommand(AbstractJsonParser parser, TaskExecutor taskExecutor) {
         // TODO validate input
+        super(parser);
         this.taskExecutor = taskExecutor;
     }
 

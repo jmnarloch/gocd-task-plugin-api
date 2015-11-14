@@ -22,6 +22,8 @@ import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import io.jmnarloch.cd.go.plugin.api.command.ApiCommand;
 import io.jmnarloch.cd.go.plugin.api.configuration.TaskConfiguration;
 import io.jmnarloch.cd.go.plugin.api.executor.TaskExecutor;
+import io.jmnarloch.cd.go.plugin.api.parser.AbstractJsonParser;
+import io.jmnarloch.cd.go.plugin.api.parser.gson.GsonParser;
 import io.jmnarloch.cd.go.plugin.api.validation.TaskValidator;
 import io.jmnarloch.cd.go.plugin.api.view.CachingTaskView;
 import io.jmnarloch.cd.go.plugin.api.view.TaskView;
@@ -39,12 +41,26 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author Jakub Narloch
  */
-public class ApiRequestDispatcherBuilder {
+public final class ApiRequestDispatcherBuilder {
 
     /**
      * Stores the mapping between the API commands and the registered handlers.
      */
     private final Map<String, ApiCommand> commands = new ConcurrentHashMap<String, ApiCommand>();
+
+    /**
+     * The parser to be used for handling the requests.
+     */
+    private final AbstractJsonParser parser;
+
+    /**
+     * Creates new instance of {@link ApiRequestDispatcherBuilder} class.
+     *
+     * @param parser the parser
+     */
+    private ApiRequestDispatcherBuilder(AbstractJsonParser parser) {
+        this.parser = parser;
+    }
 
     /**
      * Registers the task configuration provider.
@@ -53,7 +69,7 @@ public class ApiRequestDispatcherBuilder {
      * @return the dispatcher builder
      */
     public ApiRequestDispatcherBuilder toConfiguration(TaskConfiguration taskConfiguration) {
-        return addCommand(ApiRequests.CONFIGURATION, new ConfigurationCommand(taskConfiguration));
+        return addCommand(ApiRequests.CONFIGURATION, new ConfigurationCommand(parser, taskConfiguration));
     }
 
     /**
@@ -63,7 +79,7 @@ public class ApiRequestDispatcherBuilder {
      * @return the dispatcher builder
      */
     public ApiRequestDispatcherBuilder toValidator(TaskValidator taskValidator) {
-        return addCommand(ApiRequests.VALIDATE, new ValidateCommand(taskValidator));
+        return addCommand(ApiRequests.VALIDATE, new ValidateCommand(parser, taskValidator));
     }
 
     /**
@@ -89,8 +105,7 @@ public class ApiRequestDispatcherBuilder {
         if(cached) {
             view = new CachingTaskView(view);
         }
-
-        return addCommand(ApiRequests.VIEW, new ViewCommand(view));
+        return addCommand(ApiRequests.VIEW, new ViewCommand(parser, view));
     }
 
     /**
@@ -100,7 +115,7 @@ public class ApiRequestDispatcherBuilder {
      * @return the dispatcher builder
      */
     public ApiRequestDispatcherBuilder toExecutor(TaskExecutor taskExecutor) {
-        return addCommand(ApiRequests.EXECUTE, new TaskCommand(taskExecutor));
+        return addCommand(ApiRequests.EXECUTE, new TaskCommand(parser, taskExecutor));
     }
 
     /**
@@ -118,7 +133,17 @@ public class ApiRequestDispatcherBuilder {
      * @return the dispatcher builder
      */
     public static ApiRequestDispatcherBuilder dispatch() {
-        return new ApiRequestDispatcherBuilder();
+        return dispatch(new GsonParser());
+    }
+
+    /**
+     * Creates new instance of dispatcher builder.
+     *
+     * @param parser the JSON parser
+     * @return the dispatcher builder
+     */
+    public static ApiRequestDispatcherBuilder dispatch(AbstractJsonParser parser) {
+        return new ApiRequestDispatcherBuilder(parser);
     }
 
     /**
