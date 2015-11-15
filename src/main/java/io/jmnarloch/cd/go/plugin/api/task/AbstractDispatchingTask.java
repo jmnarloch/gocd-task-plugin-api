@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,7 +32,6 @@ import io.jmnarloch.cd.go.plugin.api.dispatcher.ApiRequestDispatcherBuilder;
 import io.jmnarloch.cd.go.plugin.api.parser.AbstractJsonParser;
 import io.jmnarloch.cd.go.plugin.api.parser.gson.GsonParser;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +69,7 @@ public abstract class AbstractDispatchingTask extends AbstractGoPlugin {
      * Creates new instance of {@link AbstractDispatchingTask}.
      */
     public AbstractDispatchingTask() {
+        this.parser = createParser();
     }
 
     /**
@@ -79,9 +79,7 @@ public abstract class AbstractDispatchingTask extends AbstractGoPlugin {
      */
     @Load
     public void onLoad(PluginContext context) {
-        this.parser = createParser();
-        this.dispatcher = buildDispatcher();
-        // TODO validate state
+        // empty method
     }
 
     /**
@@ -104,7 +102,7 @@ public abstract class AbstractDispatchingTask extends AbstractGoPlugin {
             logger.info("Dispatching request: " + requestMessage.requestName());
 
             // dispatches the request to configured class
-            return dispatcher.dispatch(requestMessage);
+            return dispatcher().dispatch(requestMessage);
         } catch (Exception e) {
             logger.error("Unexpected error occurred when processing request.", e);
 
@@ -118,6 +116,18 @@ public abstract class AbstractDispatchingTask extends AbstractGoPlugin {
     @Override
     public GoPluginIdentifier pluginIdentifier() {
         return new GoPluginIdentifier(TASK_EXTENSION, getSupportedExtensionVersions());
+    }
+
+    /**
+     * Retrieves the dispatcher instance.
+     *
+     * @return the dispatcher instance
+     */
+    protected ApiRequestDispatcher dispatcher() {
+        if (dispatcher == null) {
+            dispatcher = buildDispatcher();
+        }
+        return dispatcher;
     }
 
     /**
